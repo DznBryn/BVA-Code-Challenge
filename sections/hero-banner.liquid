@@ -1,0 +1,192 @@
+{% stylesheet 'scss' %}
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,500;0,700;1,300;1,400&display=swap');
+    
+    $breakpoint-md: 'screen and (min-width: 480px)';
+    $breakpoint-lg: 'screen and (min-width: 768px)';
+    $breakpoint-xl: 'screen and (min-width: 1024px)';
+
+    @mixin media($breakpoint){
+        @if $breakpoint == md {
+            @media #{$breakpoint-md}{
+                @content;
+            }
+        }
+        @else if $breakpoint == lg {
+            @media #{$breakpoint-lg}{
+                @content;
+            }
+        }
+        @else if $breakpoint == xl {
+            @media #{$breakpoint-xl}{
+                @content;
+            }
+        }
+    }
+    body{
+        margin: 0;
+    }
+    .container-fluid{
+        width:100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        @include media(lg){
+            max-height: 500px;
+        }
+        & * {
+            font-family: "Roboto";
+            font-weight: 300;
+            color: #fff;
+        }
+        .inner-container{
+            display: flex;
+            max-width:100%;
+            height: 100%;
+            padding: 1em 3em;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-image: url("https://cdn.shopify.com/s/files/1/0550/6505/1300/files/mobile_img.png?v=1614862404");
+            background-size: cover;
+            @include media(lg){
+                width: 1440px;
+                height: 500px;
+                background-image: url("https://cdn.shopify.com/s/files/1/0550/6505/1300/files/hero_img.png?v=1614862404");
+                background-size: cover;
+                &.left-alignment{
+                    justify-content: flex-start;
+                    text-align: left;
+                }
+                &.right-alignment{
+                    justify-content: flex-end;
+                    text-align: left;
+                }
+            } 
+        }
+        .col{
+            z-index: 2;
+            width: 95%;
+            
+            @include media(lg){
+                width: 600px;
+            }
+        }
+        .title{
+            margin: 0;
+            font-weight: 700;
+            font-size: 36px;
+            text-transform: capitalize;
+            @include media(lg){
+                font-size: 46px;
+            }
+        }
+        .body-text{
+            font-size:18px;
+            line-height: 1.7em;
+            margin-bottom: 2.5em;
+            @media(lg){
+                font-size: 24px;
+            }
+        }
+        .cta-button{
+            background-color:  #57AD68;
+            font-size: 20px;
+            padding: .7em 2em;
+            border-radius: 50px;
+            text-transform: uppercase;
+            text-decoration: none;
+            -webkit-transition: all .25s ease;
+            -khtml-transition: all .25s ease;
+            -moz-transition: all .25s ease;
+            -ms-transition: all .25s ease;
+            -o-transition: all .25s ease;
+            transition: all .25s ease;
+            &:hover{
+                color: #57AD68;
+                background-color: #fff;
+            }
+        }
+
+        
+
+    }
+{% endstylesheet %}
+
+<section class="container-fluid hero-banner">
+    <div class="inner-container {{ section.settings.text_alignment }}" >
+        <div class="col">
+            {%- if section.settings.title != blank -%}
+                <h1 class="title">{{ section.settings.title }}</h1>
+            {%- else -%}
+                <h1 class="title">Hero title</h1>       
+            {%- endif -%}
+            {%- if section.settings.body_text != blank -%}
+                <p class="body-text">{{ section.settings.body_text }}</p>
+            {%- else -%}
+                <p class="body-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, sapiente? Hic corrupti facilis quae ab aperiam. Quo placeat qui, repudiandae voluptatibus repellendus at, sequi odit facilis aspernatur quasi tempore sapiente!</p>
+            {%- endif -%}
+            {%- if section.settings.cta_text != blank -%}
+                <a {% if section.settings.cta_url != blank %} href="{{ section.settings.cta_url }}" {% else %} href="#" {% endif %} class="cta-button">{{ section.settings.cta_text }}</a>
+            {%- else -%}
+                <a href="#" class="cta-button">Read More</a>
+            {%- endif -%}
+        </div>
+    </div>
+</section>
+
+
+{% schema %}
+{
+    "name": "Hero Banner",
+    "settings": [  
+        {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "Text Alignment",
+            "options": [
+                {
+                    "value": "left-alignment",
+                    "label": "Left Alignment"
+                },
+                {
+                    "value": "center",
+                    "label": "Center Alignment"
+                },
+                {
+                    "value": "right-alignment",
+                    "label": "Right Alignment"
+                }
+            ],
+            "default": "center",
+            "info": "By default content are center alignment"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Hero Title"
+        },
+        {
+            "type": "text",
+            "id": "body_text",
+            "label": "Body Text",
+            "default": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, sapiente? Hic corrupti facilis quae ab aperiam. Quo placeat qui, repudiandae voluptatibus repellendus at, sequi odit facilis aspernatur quasi tempore sapiente!"
+        },
+        {
+            "type": "text",
+            "id": "cta_text",
+            "label": "CTA Text",
+            "default": "Read More"
+        },
+        {
+            "type": "url",
+            "id": "cta_url",
+            "label": "CTA URL",
+            "default": "/"
+        }
+    ]
+}
+{% endschema %}
